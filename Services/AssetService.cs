@@ -65,7 +65,7 @@ namespace AssetTrackingEF.Services
 
                 ConsoleHelper.ConsoleWrite(
                     $"{asset.Id.ToString().PadRight(10)}" +
-                    $"{asset.Brand.ToString().PadRight(10)} " +
+                    $"{asset.Brand.ToString().PadRight(20)} " +
                     $"{asset.Model.ToString().PadRight(10)}" +
                     $"{assetType.ToString().PadRight(15)}" +
                     $"{asset.PurchaseDate.ToString("yyyy-MM-dd").PadRight(15)} " +
