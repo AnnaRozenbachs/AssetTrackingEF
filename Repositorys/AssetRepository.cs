@@ -10,21 +10,9 @@ using System.Threading.Tasks;
 
 namespace AssetTrackingEF.Repositorys
 {
-    public class AssetRepository : IRepository<Asset>
+    public class AssetRepository : GenericRepository<Asset>, IAssetRepository
     {
-        private readonly AssetContext _context = new AssetContext();
-        public void Add(Asset asset)
-        {
-           _context.Assets.Add(asset);
-            Save();
-        }
-
-        public void Delete(Asset asset)
-        {
-            _context.Assets.Remove(asset);
-            Save();
-        }
-
+        private readonly AssetContext _context = new AssetContext();    
         public List<Asset> Get()
         {
             var assetList = _context.Assets
@@ -33,29 +21,6 @@ namespace AssetTrackingEF.Repositorys
                .ThenByDescending(a=>a.PurchaseDate);
 
             return assetList.ToList();
-        }
-
-        public Asset GetById(int id)
-        {
-            return _context.Assets.Find(id);
-        }
-
-        public void Save()
-        {
-            try
-            {
-                _context.SaveChanges();
-            }
-            catch (Exception ee)
-            {
-                ConsoleHelper.ConsoleWrite($"Somethinq went wrong: {ee.InnerException}", false, ConsoleColor.Red);
-            }
-        }
-
-        public void Update(Asset asset)
-        {
-            _context.Assets.Update(asset);
-            Save();
         }
     }
 }

@@ -13,8 +13,6 @@ namespace AssetTrackingEF.Services
 
         void UpdateAsset(int id);
 
-        Asset SetValues(Asset asset);
-
         void DeleteAsset(int id);
 
         void GetAssets();

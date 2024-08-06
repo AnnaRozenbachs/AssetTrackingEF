@@ -15,10 +15,21 @@ namespace AssetTrackingEF.Services
     public class AssetService : IAssetService
     {
         private AssetRepository _assetRepository = new AssetRepository();
+        private double threeYearsInDays = (3 * 365);
 
         public void AddAsset()
         {
-            Asset asset = SetValues();
+            var brand = ConsoleHelper.ConsoleWrite($"Brand: ");
+            var model = ConsoleHelper.ConsoleWrite($"Model: ");
+            var price = ConsoleHelper.ConsoleWrite($"Price: ");
+            var purchaseDate = ConsoleHelper.ConsoleWrite($"PurchaseDate: ");
+            var assetType = ConsoleHelper.ConsoleWrite($"Choose AssetType: Phone ({(int)AssetType.phone}) Computer ({(int)AssetType.computer})");
+            var office = ConsoleHelper.ConsoleWrite($"Choose Office: " +
+                                      $"Spain ({(int)OfficePlaces.spain}) " +
+                                      $"England ({(int)OfficePlaces.england}) " +
+                                      $"Sweden ({(int)OfficePlaces.sweden}) " +
+                                      $"USA ({(int)OfficePlaces.usa})");
+            Asset asset = new Asset(brand, model, decimal.Parse(price), DateTime.Parse(purchaseDate), int.Parse(assetType), int.Parse(office));
             _assetRepository.Add(asset);
             ConsoleHelper.ConsoleWrite($"The asset is now added", false, ConsoleColor.Green);
         }
@@ -45,11 +56,12 @@ namespace AssetTrackingEF.Services
                 var price = Math.Round((asset.Price * asset.Office.Rate),2);
                 var assetType = asset.AssetType == (int)AssetType.computer ? "Computer" : "Phone";
 
-                var D = DateTime.Now.AddMonths(-3);
-                var test = asset.PurchaseDate.AddYears(3);
+                var threeMonthsIntervall = (DateTime.Now.AddMonths(3) - asset.PurchaseDate).TotalDays;
+                var sixMonthsIntervall = (DateTime.Now.AddMonths(6) - asset.PurchaseDate).TotalDays;
 
-
-                DateTime t = new DateTime(test.Ticks);
+                ConsoleColor color = threeMonthsIntervall >= threeYearsInDays ? ConsoleColor.Red : 
+                                     sixMonthsIntervall >= threeYearsInDays ? ConsoleColor.Yellow: 
+                                     ConsoleColor.White; 
 
                 ConsoleHelper.ConsoleWrite(
                     $"{asset.Id.ToString().PadRight(10)}" +
@@ -59,37 +71,8 @@ namespace AssetTrackingEF.Services
                     $"{asset.PurchaseDate.ToString("yyyy-MM-dd").PadRight(15)} " +
                     $"{price.ToString().PadRight(10)} " +
                     $"{asset.Office.Currency.ToString().PadRight(10)} " +
-                    $"{asset.Office.Country.ToString()}", false);
+                    $"{asset.Office.Country.ToString()}", false, color);
             }
-        }
-
-        public Asset SetValues(Asset asset = null)
-        {
-            var brand = ConsoleHelper.ConsoleWrite($"Brand: ");
-            var model = ConsoleHelper.ConsoleWrite($"Model: ");
-            var price = ConsoleHelper.ConsoleWrite($"Price: ");
-            var purchaseDate = ConsoleHelper.ConsoleWrite($"PurchaseDate: ");
-            var assetType = ConsoleHelper.ConsoleWrite($"Choose AssetType: Phone ({(int)AssetType.phone}) Computer ({(int)AssetType.computer})");
-            var office = ConsoleHelper.ConsoleWrite($"Choose Office: " +
-                                      $"Spain ({(int)OfficePlaces.spain})" +
-                                      $"England ({(int)OfficePlaces.england})" +
-                                      $"Sweden ({(int)OfficePlaces.sweden})" +
-                                      $"USA ({(int)OfficePlaces.usa})");
-
-            if (asset == null)
-            {
-                asset = new Asset(brand, model, decimal.Parse(price), DateTime.Parse(purchaseDate), int.Parse(assetType), int.Parse(office));
-            }
-            else 
-            {
-                asset.Brand = brand;
-                asset.Model = model;
-                asset.Price = decimal.Parse(price);
-                asset.PurchaseDate = DateTime.Parse(purchaseDate);
-                asset.AssetType = int.Parse(assetType);
-                asset.OfficeId = int.Parse(office);
-            }
-            return asset;
         }
 
         public void UpdateAsset(int id)
@@ -101,7 +84,40 @@ namespace AssetTrackingEF.Services
             }
             else 
             {
-                asset = SetValues(asset);
+                var input = ConsoleHelper.ConsoleWrite($"Update (1) Brand, (2) Model, (3) AssetType, (4) PurchaseDate, (5) Price, (6) Office");
+                switch (input)
+                {
+                    case "1":
+                        input = ConsoleHelper.ConsoleWrite($"Update Brand: ");
+                        asset.Brand = input;
+                        break;
+                    case "2":
+                        input = ConsoleHelper.ConsoleWrite($"Update Model: ");
+                        asset.Model = input;
+                        break;
+                    case "3":
+                        input = ConsoleHelper.ConsoleWrite($"Update AssetType: Phone ({(int)AssetType.phone}) Computer ({(int)AssetType.computer})");
+                        asset.AssetType = int.Parse(input);
+                        break;
+                    case "4":
+                        input = ConsoleHelper.ConsoleWrite($"Update PurchaseDate: ");
+                        asset.PurchaseDate = DateTime.Parse(input);
+                        break;
+                    case "5":
+                        input = ConsoleHelper.ConsoleWrite($"Update Price: ");
+                        asset.Price = decimal.Parse(input);
+                        break;
+                    case "6":
+                        input = ConsoleHelper.ConsoleWrite($"Update Office: " +
+                                          $"Spain ({(int)OfficePlaces.spain}) " +
+                                          $"England ({(int)OfficePlaces.england}) " +
+                                          $"Sweden ({(int)OfficePlaces.sweden}) " +
+                                          $"USA ({(int)OfficePlaces.usa})");
+                        asset.OfficeId = int.Parse(input);
+                        break;
+                    default:
+                        break;
+                }
                 _assetRepository.Update(asset);
                 ConsoleHelper.ConsoleWrite($"The asset has been updated", false, ConsoleColor.Green);
             }

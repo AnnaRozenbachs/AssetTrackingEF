@@ -5,10 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AssetTrackingEF.Services
+namespace AssetTrackingEF.Repositorys
 {
-    public interface IOfficeService
+    public interface IAssetRepository : IGenericRepository<Asset>
     {
-        void AddOffice(Office office);
+        List<Asset> Get();
     }
 }

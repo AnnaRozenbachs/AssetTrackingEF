@@ -7,10 +7,8 @@ using System.Threading.Tasks;
 
 namespace AssetTrackingEF.Repositorys
 {
-    public interface IRepository<T>
+    public interface IGenericRepository<T> where T : class
     {
-        List<T> Get();
-
         void Add(T entity);
 
         void Update(T entity);
