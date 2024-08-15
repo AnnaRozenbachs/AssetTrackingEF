@@ -18,10 +18,20 @@ namespace AssetTrackingEF.Repositorys
             Save();
         }
 
+        public void AddRange(List<T> entity)
+        {
+            _context.Set<T>().AddRange(entity);
+            Save();
+        }
+
         public void Delete(T entity)
         {
             _context.Set<T>().Remove(entity);
             Save();
+        }
+        public List<T> GetAll()
+        {
+            return _context.Set<T>().ToList();
         }
 
         public T GetById(int id)

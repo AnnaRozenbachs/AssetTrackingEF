@@ -13,6 +13,8 @@ namespace AssetTrackingEF.Repositorys
 
         void Update(T entity);
 
+        void AddRange(List<T> entity);
+
         void Delete(T entity);
 
         T GetById(int id);

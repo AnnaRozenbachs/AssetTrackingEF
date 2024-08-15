@@ -22,5 +22,6 @@ namespace AssetTrackingEF.Repositorys
 
             return assetList.ToList();
         }
+
     }
 }

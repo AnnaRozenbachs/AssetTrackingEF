@@ -22,5 +22,16 @@ namespace AssetTrackingEF.Models
         public decimal Rate { get; set; }
 
         public string Currency { get; set; }
+
+        public static List<Office> OfficeList()
+        {
+            return new List<Office>
+            {
+                new Office("Spain", 0.92M, "EUR"),
+                new Office("England", 0.78M, "GBP"),
+                new Office("Sweden", 10.70M, "SEK"),
+                new Office("USA", 1.0M, "USD")
+            };
+        }
     }
 }

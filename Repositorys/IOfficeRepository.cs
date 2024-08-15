@@ -1,5 +1,4 @@
-﻿using AssetTrackingEF.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace AssetTrackingEF.Repositorys
 {
-    public interface IAssetRepository : IGenericRepository<Asset>
+    public interface IOfficeRepository
     {
-        List<Asset> Get();
-
+        public void AddOfficeList();
     }
 }

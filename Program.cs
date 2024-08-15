@@ -8,10 +8,12 @@ namespace AssetTrackingEF
     internal class Program
     {
         static AssetService _assetService = new AssetService();
+        static OfficeService _oService = new OfficeService();
         static void Main(string[] args)
         {
             while (true) 
             {
+                _oService.AddOfficeList();
                 RunApplication();
             }
 
